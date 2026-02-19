@@ -1,10 +1,6 @@
 import pandas as pd
-import matplotlib.pyplot as mpl
-import sklearn as s0
-from sklearn.model_selection import RandomizedSearchCV
 from sklearn.datasets import load_iris
-from scipy.stats import  loguniform, uniform, randint
-from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
 
 def makeDataset(filePath):
     df = pd.read_csv(filePath, names=['Unsorted'])
@@ -41,36 +37,14 @@ myNewData = myNewData.rename(columns = {
     23: "Marker Channel",
     24: "Timestamp (Formatted)",
 })
+
 lowest = myNewData.iloc[0, 22]
 myNewData['Timestamp'] = myNewData['Timestamp'] - lowest
 myNewData['Label'] = (round(myNewData['Timestamp'], 0) % 10) >= 5
 print(myNewData)
 
-
-iris = load_iris(as_frame=True)
-df = iris.frame
-
-param_dist = {
-    'C': loguniform(1e-4, 1e2),
-    'l1_ratio': uniform(0, 1),
-    'max_iter': randint(400, 500)
-}
-
-model = LogisticRegression(solver="saga", tol=1e-3)
-
-tuner = RandomizedSearchCV(
-    estimator=model,
-    param_distributions=param_dist,
-    n_iter=100,
-    cv=5,
-    verbose=1,
-    random_state=42,
-    n_jobs=-1
-)
-
+# df = myNewData
+df = load_iris(as_frame=True)
 x = df.drop(columns=['target'])
 y = df['target']
-tuner.fit(x, y)
-
-print(f"Best Accuracy: {tuner.best_score_: .4f}")
-print(f"Best Parameters: {tuner.best_params_}")
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
