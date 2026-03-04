@@ -3,7 +3,7 @@ from sklearn.model_selection import RandomizedSearchCV
 from scipy.stats import  loguniform, uniform, randint
 from sklearn.linear_model import LogisticRegression
 
-import utils as u
+from . import utils as u
 
 default_dataset_path = "Evo_Initial_BCI_Data/2026-27-01_Evo_Run04_FiveSets_Gain12.csv"
 

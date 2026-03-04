@@ -1,6 +1,6 @@
 import pandas as pd
 
-import utils as u
+from . import utils as u
 
 def predict(input_data: pd.DataFrame) -> int:
     input = u.format_data(input_data)
