@@ -26,7 +26,7 @@ class SignalStreamer:
             print("Connected to LSL stream:", eeg_streams[0].name())
             while not self._stop_signal:
                 sample, timestamp = inlet.pull_chunk(STREAM_TIMEOUT, int(WINDOW_SIZE))
-                signal = np.array(sample)
+                signal = np.array(sample, dtype=np.float32)
                 assert signal.shape[0] == WINDOW_SIZE
                 self._signal_buffer.put(signal)
                 time.sleep(1)  # Simulate delay between signals
